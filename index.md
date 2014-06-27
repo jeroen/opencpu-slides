@@ -53,18 +53,18 @@ rnorm(n=3, mean=10, sd=10)
 ![gears2](gears.jpg)
 
 ## What OpenCPU does:
- - Interoperable HTTP for data analysis
- - RPC and object management
+ - Interoperable `HTTP` for data analysis
+ - `RPC` and object management
  - I/O: `JSON`, `Protocol Buffers`, `CSV` 
- - Support for parallel/async requests
- - Highly configurable security policies 
- - Native reproducibility
- - Client libraries: JavaScript, Ruby, ...
+ - Support for `parallel`/async requests
+ - Highly configurable `security` policies 
+ - Native `reproducibility`
+ - Client libraries: `JavaScript`, `Ruby`, ...
 
 ## OpenCPU does not
  - No predefined widgets
  - No special programming paradigms
- - No need to manage processes, users, eval, etc. Yet state and privacy!
+ - No need to manage processes, users, code evaluation, etc. Yet state and privacy!
 
 ---
 
@@ -422,7 +422,7 @@ sudo apt-get install opencpu
 
 ---
 
-## Publish packages on ocpu.io
+## Publish your packages/apps on ocpu.io
 
 <br>
 
