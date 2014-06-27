@@ -1,0 +1,12 @@
+img {
+  float: right;
+  max-height: 500px;
+  max-width: 980px;
+  margin-right: 20px;
+  margin-left: 15px;
+  padding: 3px;
+}
+
+q {
+  font-style:italic;
+}

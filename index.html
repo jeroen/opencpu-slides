@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The OpenCPU System</title>
+  <meta charset="utf-8">
+  <meta name="description" content="The OpenCPU System">
+  <meta name="author" content="Jeroen Ooms">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/jeroen.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>The OpenCPU System</h1>
+    <h2>Towards a universal interface for scientific computing</h2>
+    <p>Jeroen Ooms<br/>UCLA Statistics</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <article data-timings="">
+    <!-- 
+library(slidify)
+library(slidifyLibraries)
+-->
+
+<h2>What is OpenCPU</h2>
+
+<p><q>The OpenCPU system provides a HTTP API for scientific computing to build scalable analysis and visualization modules for use in systems, pipelines, and web applications.</q></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Hello World! Basic JSON RPC</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="bash">curl https://public.opencpu.org/ocpu/library/stats/R/rnorm/json \
+-H &quot;Content-Type: application/json&quot; -d &#39;{&quot;n&quot;:3, &quot;mean&quot;: 10, &quot;sd&quot;:10}&#39;
+
+[4.9829, 6.3104, 11.411]
+</code></pre>
+
+<p>This performs the following procedure</p>
+
+<pre><code class="r">library(jsonlite)
+args &lt;- fromJSON(&#39;{&quot;n&quot;:3, &quot;mean&quot;: 10, &quot;sd&quot;:10}&#39;)
+output &lt;- do.call(stats::rnorm, args)
+toJSON(output)
+</code></pre>
+
+<p>Which is equivalent to</p>
+
+<pre><code class="r">rnorm(n=3, mean=10, sd=10)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <article data-timings="">
+    <p><img src="gears.jpg" alt="gears2"></p>
+
+<h2>What OpenCPU does:</h2>
+
+<ul>
+<li>Interoperable HTTP for data analysis</li>
+<li>RPC and object management</li>
+<li>I/O: <code>JSON</code>, <code>Protocol Buffers</code>, <code>CSV</code> </li>
+<li>Support for parallel/async requests</li>
+<li>Highly configurable security policies </li>
+<li>Native reproducibility</li>
+<li>Client libraries: JavaScript, Ruby, ...</li>
+</ul>
+
+<h2>OpenCPU does not</h2>
+
+<ul>
+<li>No predefined widgets</li>
+<li>No special programming paradigms</li>
+<li>No need to manage processes, users, eval, etc. Yet state and privacy!</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>What is OpenCPU?</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><a href="https://www.opencpu.org/apps.html"><img src="stockplot.png" alt="stockplot"></a></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Using curl</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="no-highlight">curl -v https://demo.ocpu.io/stocks/R/smoothplot -d &#39;ticker=&quot;GOOG&quot;&amp;from=&quot;2013-01-01&quot;&#39;
+
+&gt; POST /stocks/R/smoothplot HTTP/1.1
+&gt; User-Agent: curl/7.30.0
+&gt; Content-Type: application/x-www-form-urlencoded
+
+&lt; HTTP/1.1 201 Created
+&lt; Location: https://tmp.ocpu.io/x081cca8c23/
+&lt; Access-Control-Allow-Origin: *
+&lt; X-ocpu-session: x081cca8c23
+&lt; X-ocpu-r: R version 3.1.0 (2014-04-10)
+&lt; X-ocpu-locale: en_US.UTF-8
+&lt; X-ocpu-time: 2014-06-26 17:29:32 PDT
+&lt; X-ocpu-version: 1.4.3
+&lt; X-ocpu-server: rApache
+&lt; x-ocpu-cache: MISS
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>OpenCPU apps: JavaScript Client</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>App is simply a package with web pages</li>
+<li>Web pages call R functions via Ajax</li>
+</ul>
+
+<pre><code class="javascript">//JavaScript client code
+var ticker = $(&quot;#ticker&quot;).val();    
+var req = $(&quot;#plotdiv&quot;).rplot(&quot;smoothplot&quot;, {
+    ticker : ticker,
+    from : &quot;2013-01-01&quot;
+})
+</code></pre>
+
+<p>Results in:</p>
+
+<pre><code class="r">smoothplot(ticker=ticker, from=&quot;2013-01-01&quot;)
+</code></pre>
+
+<p>Which is the basis of the <a href="https://demo.ocpu.io/stocks/www/">stocks</a> app and <a href="JSfiddle:%20http://jsfiddle.net/opencpu/MkAVF/">this jsfiddle</a></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>Compare to language bridges</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Bridges to R are available for most popular languages and environments:</p>
+
+<ul>
+<li>RInside (C++)</li>
+<li>rpy2 (python)</li>
+<li>JRI (Java)</li>
+<li>RinRuby</li>
+<li>rApache </li>
+<li>littler </li>
+<li>RServe (socket)</li>
+<li>RDCOM (windows, excel)</li>
+</ul>
+
+<p>So why would you want to use OpenCPU?</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>Difficulties with language bridges</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>An hello-world example from the <code>rserve</code> manual:</p>
+
+<pre><code class="java">RConnection c = new RConnection();
+double d[] = c.eval(&quot;rnorm(10)&quot;).asDoubles();
+</code></pre>
+
+<ul>
+<li>Client needs to generate R syntax</li>
+<li>Client needs to read/manipulate internal R data types</li>
+<li>Client needs to manage R processes</li>
+<li>Limited exception handling</li>
+<li>No concurrency</li>
+<li>Result: high coupling</li>
+<li>Need cross-language expert to get this to work</li>
+<li>Fragmentation of efforts by language/environment</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>Towards an API</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>OpenCPU layers on a standardized application protocol (HTTP) to provide an API for statistical computing and visualization (with R, or something else...).</p>
+
+<h3>Benefits of HTTP</h3>
+
+<ul>
+<li>Mature, very flexible application protocol</li>
+<li>Interoperable (both client and server!)</li>
+<li>Distributed (using simple URLs)</li>
+<li>Native exception handling (status codes)</li>
+<li>Many features get built-in by design (caching, encryption, authentication, etc)</li>
+<li>Clients widely available</li>
+<li>Implemented in all browsers</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>Separation of concerns</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>API describes logic of data analysis</li>
+<li>Independent of client/application</li>
+<li>Independent of computational language</li>
+<li>Same API could be implemented in Julia, Python, Matlab</li>
+</ul>
+
+<h2>Important API concepts:</h2>
+
+<ol>
+<li>Objects</li>
+<li>Graphics</li>
+<li>Data</li>
+<li>Manuals</li>
+<li>Namespaces</li>
+<li>Function calls</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-11" style="background:;">
+  <hgroup>
+    <h2>The OpenCPU API</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>HTTP Methods</h3>
+
+<p>Current API uses GET and POST methods. Get is for retrieving objects, POST is for RPC.</p>
+
+<table class="table table-bordered">
+  <thead>
+        <tr>
+            <th>Method</th>
+            <th>Target</th>
+            <th>Action</th>
+            <th>Arguments</th>        
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>GET</code></td>
+            <td>object</td>
+            <td>read object</td>
+            <td>control output format</td>        
+            <td><code>GET /ocpu/cran/MASS/data/cats/json</code></td>
+        </tr>
+        <tr>
+            <td><code>POST</code></td>
+            <td>object</td>
+            <td>call function</td>
+            <td>function arguments</td>
+            <td><code>POST /ocpu/library/stats/R/rnorm</code></td>
+        </tr>
+        <tr>
+            <td><code>GET</code></td>
+            <td>file</td>
+            <td>read file</td>
+            <td>-</td>
+            <td><code>GET /ocpu/cran/MASS/NEWS</code> <br /> <code>GET /ocpu/cran/MASS/scripts/</code></td>
+        </tr>                
+        <tr>
+            <td><code>POST</code></td>
+            <td>file</td>
+            <td>run script</td>
+            <td>control interpreter </td>
+            <td><code>POST /ocpu/cran/MASS/scripts/ch01.R</code> <br /><code>POST /ocpu/cran/knitr/examples/minimal.Rmd</code></td>
+        </tr>                        
+    </tbody>
+</table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-12" style="background:;">
+  <hgroup>
+    <h2>The OpenCPU API</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>HTTP Status Codes</h3>
+
+<table class="table table-bordered">
+  <thead>
+        <tr>
+            <th>HTTP Code</th>
+            <th>When</th>
+            <th>Returns</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>200 OK</code></td>
+            <td>On successful GET request</td>
+            <td>Resource content</td>
+        </tr>
+        <tr>
+            <td><code>201 Created</code></td>
+            <td>On successful POST request</td>
+            <td>Output location</td>
+        </tr>
+        <tr>
+            <td><code>302 Found</code></td>
+            <td>Redirect</td>
+            <td>Redirect Location</td>
+        </tr>
+        <tr>
+            <td><code>400 Bad Request</code></td>
+            <td>R raised an error.</td>
+            <td>Error message in <code>text/plain</code></td>
+        </tr>  
+        <tr>
+            <td><code>502 Bad Gateway</code></td>
+            <td>Nginx (opencpu-cache) can't connect to OpenCPU server.</td>
+            <td>(admin needs to look in error logs)</td>
+        </tr>   
+        <tr>
+            <td><code>503 Bad Request</code></td>
+            <td>Serious problem with the server</td>
+            <td>(admin needs to look in error logs)</td>
+        </tr>                                                   
+    </tbody>
+</table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-13" style="background:;">
+  <hgroup>
+    <h2>The OpenCPU API</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Package resources</h3>
+
+<table><thead>
+<tr>
+<th>Path</th>
+<th>What</th>
+<th>Examples</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>../{pkgname}/</code></td>
+<td>Package Information</td>
+<td><code>/ocpu/cran/MASS/</code></td>
+</tr>
+<tr>
+<td><code>../{pkgname}/R/</code></td>
+<td>Exported R objects</td>
+<td><code>/ocpu/cran/MASS/R/rlm</code></td>
+</tr>
+<tr>
+<td><code>../{pkgname}/data/</code></td>
+<td>Data included with this package.</td>
+<td><code>/ocpu/cran/MASS/data/cats</code></td>
+</tr>
+<tr>
+<td><code>../{pkgname}/man/</code></td>
+<td>Manuals (help pages) included in this package.</td>
+<td><code>/ocpu/cran/MASS/man/rlm</code></td>
+</tr>
+<tr>
+<td><code>../{pkgname}/*</code></td>
+<td>Files in package installation directory</td>
+<td><code>/ocpu/cran/MASS/NEWS</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>/ocpu/cran/MASS/scripts/</code></td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>The OpenCPU API</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Session resources</h3>
+
+<table><thead>
+<tr>
+<th>Path</th>
+<th>What</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>../{key}/</code></td>
+<td>List available output for this session.</td>
+<td><code>/ocpu/tmp/x08384729/</code></td>
+</tr>
+<tr>
+<td><code>../{key}/R/</code></td>
+<td>R objects stored in this session.</td>
+<td><code>/ocpu/tmp/x08384729/R/.val/json</code></td>
+</tr>
+<tr>
+<td><code>../{key}/graphics/</code></td>
+<td>Graphics generated in this session.</td>
+<td><code>/ocpu/tmp/x08384729/graphics/1/png</code></td>
+</tr>
+<tr>
+<td><code>../{key}/source</code></td>
+<td>Input source code for this session.</td>
+<td><code>/ocpu/tmp/x08384729/source</code></td>
+</tr>
+<tr>
+<td><code>../{key}/stdout</code></td>
+<td>Text printed to STDOUT in this session</td>
+<td><code>/ocpu/tmp/x08384729/stdout</code></td>
+</tr>
+<tr>
+<td><code>../{key}/console</code></td>
+<td>Console I/O (combines source and stdout)</td>
+<td><code>/ocpu/tmp/x08384729/console</code></td>
+</tr>
+<tr>
+<td><code>../{key}/zip</code></td>
+<td>Download session as a zip archive.</td>
+<td><code>/ocpu/tmp/x08384729/zip</code></td>
+</tr>
+<tr>
+<td><code>../{key}/tar</code></td>
+<td>Download session as a gzipped tarball.</td>
+<td><code>/ocpu/tmp/x08384729/tar</code></td>
+</tr>
+<tr>
+<td><code>../{key}/files/*</code></td>
+<td>Files in the working directory</td>
+<td><code>/ocpu/tmp/x08384729/files/mydata.csv</code></td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>The OpenCPU API</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Content-types</h3>
+
+<table><thead>
+<tr>
+<th>Format</th>
+<th>Content-type</th>
+<th>Encoder (+args)</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>print</td>
+<td><code>text/plain</code></td>
+<td>base::print</td>
+<td><code>/ocpu/cran/MASS/R/rlm/print</code></td>
+</tr>
+<tr>
+<td>json</td>
+<td><code>application/json</code></td>
+<td>jsonlite::toJSON</td>
+<td><code>/ocpu/cran/MASS/data/cats/json</code></td>
+</tr>
+<tr>
+<td>csv</td>
+<td><code>text/csv</code></td>
+<td>utils::write.csv</td>
+<td><code>/ocpu/cran/MASS/data/cats/csv</code></td>
+</tr>
+<tr>
+<td>tab</td>
+<td><code>text/plain</code></td>
+<td>utils::write.table</td>
+<td><code>/ocpu/cran/MASS/data/cats/tab</code></td>
+</tr>
+<tr>
+<td>rda</td>
+<td><code>application/octet-stream</code></td>
+<td>base::save</td>
+<td><code>/ocpu/cran/MASS/data/cats/rda</code></td>
+</tr>
+<tr>
+<td>rds</td>
+<td><code>application/octet-stream</code></td>
+<td>base::saveRDS</td>
+<td><code>/ocpu/cran/MASS/data/cats/rds</code></td>
+</tr>
+<tr>
+<td>pb</td>
+<td><code>application/x-protobuf</code></td>
+<td>RProtoBuf::serialize_pb</td>
+<td><code>/ocpu/cran/MASS/data/cats/pb</code></td>
+</tr>
+<tr>
+<td>png</td>
+<td><code>image/png</code></td>
+<td>grDevices::png</td>
+<td><code>/ocpu/tmp/{key}/graphics/1/png</code></td>
+</tr>
+<tr>
+<td>pdf</td>
+<td><code>application/pdf</code></td>
+<td>grDevices::pdf</td>
+<td><code>/ocpu/tmp/{key}/graphics/1/pdf</code></td>
+</tr>
+<tr>
+<td>svg</td>
+<td><code>image/svg+xml</code></td>
+<td>grDevices::svg</td>
+<td><code>/ocpu/tmp/{key}/graphics/1/svg</code></td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-16" style="background:;">
+  <hgroup>
+    <h2>The OpenCPU API</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Executing Scripts</h3>
+
+<table><thead>
+<tr>
+<th>File extension</th>
+<th>Type</th>
+<th>Interpreter</th>
+<th>Arguments</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>file.r</code></td>
+<td>R script</td>
+<td>evaluate::evaluate</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>file.tex</code></td>
+<td>latex</td>
+<td>tools::texi2pdf</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>file.rnw</code></td>
+<td>knitr/sweave</td>
+<td>knitr::knit + tools::texi2pdf</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>file.md</code></td>
+<td>markdown</td>
+<td>knitr::pandoc</td>
+<td>format (see ?pandoc)</td>
+</tr>
+<tr>
+<td><code>file.rmd</code></td>
+<td>knitr/markdown</td>
+<td>knitr::knit + knitr::pandoc</td>
+<td>format (see ?pandoc)</td>
+</tr>
+<tr>
+<td><code>file.brew</code></td>
+<td>brew</td>
+<td>brew::brew</td>
+<td>output (see ?brew)</td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>Libraries</h2>
+  </hgroup>
+  <article data-timings="">
+    <table class="table table-bordered">
+  <thead>
+    <tr>
+            <th>Path</th>
+            <th>What</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>/ocpu/library/{pkgname}/</code></td>
+            <td>R packages installed in one of the global libraries on the server.</td>
+        </tr>
+        <tr>
+            <td><code>/ocpu/user/{username}/library/{pkgname}/</code></td>
+            <td>R packages installed in the home library of Linux user <code>{username}</code>.</td>
+        </tr>
+    <tr>
+            <td><code>/ocpu/cran/{pkgname}/</code></td>
+            <td>Interfaces to the R package <code>{pkgname}</code> that is <i>current</i> on CRAN.</td>
+        </tr>   
+        <tr>
+            <td><code>/ocpu/bioc/{pkgname}/</code></td>
+            <td>Interfaces to the R package <code>{pkgname}</code> that is <i>current</i> on BioConductor.</td>
+        </tr>  
+        <tr>
+            <td><code>/ocpu/github/{gituser}/{pkgname}/</code></td>
+            <td>R package <code>{pkgname}</code> in the <i>master branch</i> of the identically named repository from github user <code>{gituser}</code>.</td>
+        </tr>   
+        <tr>
+            <td><code>/ocpu/tmp/{key}/</code></td>
+            <td>Temporary sessions, which hold outputs from a function/script RPC.</td>
+        </tr>
+    </tbody>
+</table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-18" style="background:;">
+  <hgroup>
+    <h2>Trying OpenCPU</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Free public demo server:</h3>
+
+<ul>
+<li><a href="https://public.opencpu.org/ocpu/">https://public.opencpu.org/ocpu/</a></li>
+</ul>
+
+<h3>Single-user development server:</h3>
+
+<pre><code>install.packages(&quot;opencpu&quot;)
+library(opencpu)
+</code></pre>
+
+<h3>Ubuntu Linux cloud server</h3>
+
+<pre><code class="no-highlight">#requires Ubuntu 14.04
+sudo add-apt-repository ppa:opencpu/opencpu-1.4
+sudo apt-get update
+sudo apt-get install opencpu
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-19" style="background:;">
+  <hgroup>
+    <h2>Publish packages on ocpu.io</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><br></p>
+
+<p>Github Webhook: <a href="https://public.opencpu.org/ocpu/webhook">https://public.opencpu.org/ocpu/webhook</a></p>
+
+<hr>
+
+<p><img src="githook.png" alt="githook"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-20" style="background:;">
+  <hgroup>
+    <h2>Learn more!</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="frink.png" alt="frink"></p>
+
+<h3>API documentation</h3>
+
+<ul>
+<li><a href="https://www.opencpu.org/api.html">https://www.opencpu.org/api.html</a></li>
+</ul>
+
+<h3>Example Apps</h3>
+
+<ul>
+<li><a href="https://www.opencpu.org/apps.html">https://www.opencpu.org/apps.html</a></li>
+<li><a href="https://github.com/opencpu">https://github.com/opencpu</a></li>
+</ul>
+
+<h3>Papers</h3>
+
+<ul>
+<li><a href="https://www.opencpu.org/research.html">https://www.opencpu.org/research.html</a></li>
+<li><a href="http://arxiv.org/a/ooms_j_1">http://arxiv.org/a/ooms_j_1</a></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title=''>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Hello World! Basic JSON RPC'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title=''>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='What is OpenCPU?'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Using curl'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='OpenCPU apps: JavaScript Client'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Compare to language bridges'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Difficulties with language bridges'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Towards an API'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Separation of concerns'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='The OpenCPU API'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='The OpenCPU API'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='The OpenCPU API'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='The OpenCPU API'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='The OpenCPU API'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='The OpenCPU API'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Libraries'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Trying OpenCPU'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Publish packages on ocpu.io'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Learn more!'>
+         20
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
