@@ -66,13 +66,15 @@ rnorm(n=3, mean=10, sd=10)
 
 ---
 
-## What is OpenCPU?
+## Beyond widgets...
 
 [![stockplot](stockplot.png)](https://www.opencpu.org/apps.html)
 
 ---
 
-## Using curl
+<!-- caching, HTTP :-) -->
+
+## Keys and objects
 
 ```no-highlight
 curl -v https://demo.ocpu.io/stocks/R/smoothplot -d 'ticker="GOOG"&from="2013-01-01"'
@@ -83,17 +85,39 @@ curl -v https://demo.ocpu.io/stocks/R/smoothplot -d 'ticker="GOOG"&from="2013-01
 
 < HTTP/1.1 201 Created
 < Location: https://tmp.ocpu.io/x081cca8c23/
+< Cache-Control: max-age=300, public
 < Access-Control-Allow-Origin: *
 < X-ocpu-session: x081cca8c23
 < X-ocpu-r: R version 3.1.0 (2014-04-10)
 < X-ocpu-locale: en_US.UTF-8
 < X-ocpu-time: 2014-06-26 17:29:32 PDT
 < X-ocpu-version: 1.4.3
-< X-ocpu-server: rApache
 < x-ocpu-cache: MISS
 ```
 
 ---
+
+## State in OpenCPU
+
+![social](social.png)
+
+ - Each requests stateless (HTTP)
+ - No single, permanent R process
+ 
+### Instead: "functional state"
+
+ - Each RPC stores object and returns key. No side-effects.
+ - Use key to retrieve or re-use stored object
+ 
+### Privacy?
+
+- No users! Each key is secret
+- Keys initially only known to creator
+- But: you are free to share/publish keys
+- Basis of "social" analysis
+
+---
+
 
 ## OpenCPU apps: JavaScript Client
 
@@ -115,7 +139,7 @@ Results in:
 smoothplot(ticker=ticker, from="2013-01-01")
 ```
 
-Which is the basis of the [stocks](https://demo.ocpu.io/stocks/www/) app and [this jsfiddle](JSfiddle: http://jsfiddle.net/opencpu/MkAVF/)
+Which is the basis of the [stocks](https://demo.ocpu.io/stocks/www/) app and [this jsfiddle](http://jsfiddle.net/opencpu/MkAVF/).
 
 ---
 

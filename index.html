@@ -115,7 +115,7 @@ toJSON(output)
 
 <slide class="" id="slide-4" style="background:;">
   <hgroup>
-    <h2>What is OpenCPU?</h2>
+    <h2>Beyond widgets...</h2>
   </hgroup>
   <article data-timings="">
     <p><a href="https://www.opencpu.org/apps.html"><img src="stockplot.png" alt="stockplot"></a></p>
@@ -125,11 +125,12 @@ toJSON(output)
 </slide>
 
 <slide class="" id="slide-5" style="background:;">
-  <hgroup>
-    <h2>Using curl</h2>
-  </hgroup>
   <article data-timings="">
-    <pre><code class="no-highlight">curl -v https://demo.ocpu.io/stocks/R/smoothplot -d &#39;ticker=&quot;GOOG&quot;&amp;from=&quot;2013-01-01&quot;&#39;
+    <!-- caching, HTTP :-) -->
+
+<h2>Keys and objects</h2>
+
+<pre><code class="no-highlight">curl -v https://demo.ocpu.io/stocks/R/smoothplot -d &#39;ticker=&quot;GOOG&quot;&amp;from=&quot;2013-01-01&quot;&#39;
 
 &gt; POST /stocks/R/smoothplot HTTP/1.1
 &gt; User-Agent: curl/7.30.0
@@ -137,13 +138,13 @@ toJSON(output)
 
 &lt; HTTP/1.1 201 Created
 &lt; Location: https://tmp.ocpu.io/x081cca8c23/
+&lt; Cache-Control: max-age=300, public
 &lt; Access-Control-Allow-Origin: *
 &lt; X-ocpu-session: x081cca8c23
 &lt; X-ocpu-r: R version 3.1.0 (2014-04-10)
 &lt; X-ocpu-locale: en_US.UTF-8
 &lt; X-ocpu-time: 2014-06-26 17:29:32 PDT
 &lt; X-ocpu-version: 1.4.3
-&lt; X-ocpu-server: rApache
 &lt; x-ocpu-cache: MISS
 </code></pre>
 
@@ -152,6 +153,38 @@ toJSON(output)
 </slide>
 
 <slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>State in OpenCPU</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="social.png" alt="social"></p>
+
+<ul>
+<li>Each requests stateless (HTTP)</li>
+<li>No single, permanent R process</li>
+</ul>
+
+<h3>Instead: &quot;functional state&quot;</h3>
+
+<ul>
+<li>Each RPC stores object and returns key. No side-effects.</li>
+<li>Use key to retrieve or re-use stored object</li>
+</ul>
+
+<h3>Privacy?</h3>
+
+<ul>
+<li>No users! Each key is secret</li>
+<li>Keys initially only known to creator</li>
+<li>But: you are free to share/publish keys</li>
+<li>Basis of &quot;social&quot; analysis</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-7" style="background:;">
   <hgroup>
     <h2>OpenCPU apps: JavaScript Client</h2>
   </hgroup>
@@ -174,13 +207,13 @@ var req = $(&quot;#plotdiv&quot;).rplot(&quot;smoothplot&quot;, {
 <pre><code class="r">smoothplot(ticker=ticker, from=&quot;2013-01-01&quot;)
 </code></pre>
 
-<p>Which is the basis of the <a href="https://demo.ocpu.io/stocks/www/">stocks</a> app and <a href="JSfiddle:%20http://jsfiddle.net/opencpu/MkAVF/">this jsfiddle</a></p>
+<p>Which is the basis of the <a href="https://demo.ocpu.io/stocks/www/">stocks</a> app and <a href="http://jsfiddle.net/opencpu/MkAVF/">this jsfiddle</a>.</p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-7" style="background:;">
+<slide class="" id="slide-8" style="background:;">
   <hgroup>
     <h2>Compare to language bridges</h2>
   </hgroup>
@@ -204,7 +237,7 @@ var req = $(&quot;#plotdiv&quot;).rplot(&quot;smoothplot&quot;, {
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-8" style="background:;">
+<slide class="" id="slide-9" style="background:;">
   <hgroup>
     <h2>Difficulties with language bridges</h2>
   </hgroup>
@@ -230,7 +263,7 @@ double d[] = c.eval(&quot;rnorm(10)&quot;).asDoubles();
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-9" style="background:;">
+<slide class="" id="slide-10" style="background:;">
   <hgroup>
     <h2>Towards an API</h2>
   </hgroup>
@@ -253,7 +286,7 @@ double d[] = c.eval(&quot;rnorm(10)&quot;).asDoubles();
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-10" style="background:;">
+<slide class="" id="slide-11" style="background:;">
   <hgroup>
     <h2>Separation of concerns</h2>
   </hgroup>
@@ -280,7 +313,7 @@ double d[] = c.eval(&quot;rnorm(10)&quot;).asDoubles();
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-11" style="background:;">
+<slide class="" id="slide-12" style="background:;">
   <hgroup>
     <h2>The OpenCPU API</h2>
   </hgroup>
@@ -335,7 +368,7 @@ double d[] = c.eval(&quot;rnorm(10)&quot;).asDoubles();
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-12" style="background:;">
+<slide class="" id="slide-13" style="background:;">
   <hgroup>
     <h2>The OpenCPU API</h2>
   </hgroup>
@@ -388,7 +421,7 @@ double d[] = c.eval(&quot;rnorm(10)&quot;).asDoubles();
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-13" style="background:;">
+<slide class="" id="slide-14" style="background:;">
   <hgroup>
     <h2>The OpenCPU API</h2>
   </hgroup>
@@ -438,7 +471,7 @@ double d[] = c.eval(&quot;rnorm(10)&quot;).asDoubles();
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-14" style="background:;">
+<slide class="" id="slide-15" style="background:;">
   <hgroup>
     <h2>The OpenCPU API</h2>
   </hgroup>
@@ -503,7 +536,7 @@ double d[] = c.eval(&quot;rnorm(10)&quot;).asDoubles();
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-15" style="background:;">
+<slide class="" id="slide-16" style="background:;">
   <hgroup>
     <h2>The OpenCPU API</h2>
   </hgroup>
@@ -584,7 +617,7 @@ double d[] = c.eval(&quot;rnorm(10)&quot;).asDoubles();
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-16" style="background:;">
+<slide class="" id="slide-17" style="background:;">
   <hgroup>
     <h2>The OpenCPU API</h2>
   </hgroup>
@@ -641,7 +674,7 @@ double d[] = c.eval(&quot;rnorm(10)&quot;).asDoubles();
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-17" style="background:;">
+<slide class="" id="slide-18" style="background:;">
   <hgroup>
     <h2>Libraries</h2>
   </hgroup>
@@ -685,7 +718,7 @@ double d[] = c.eval(&quot;rnorm(10)&quot;).asDoubles();
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-18" style="background:;">
+<slide class="" id="slide-19" style="background:;">
   <hgroup>
     <h2>Trying OpenCPU</h2>
   </hgroup>
@@ -714,7 +747,7 @@ sudo apt-get install opencpu
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-19" style="background:;">
+<slide class="" id="slide-20" style="background:;">
   <hgroup>
     <h2>Publish your packages/apps on ocpu.io</h2>
   </hgroup>
@@ -731,7 +764,7 @@ sudo apt-get install opencpu
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-20" style="background:;">
+<slide class="" id="slide-21" style="background:;">
   <hgroup>
     <h2>Learn more!</h2>
   </hgroup>
@@ -786,49 +819,49 @@ sudo apt-get install opencpu
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=4 title='What is OpenCPU?'>
+        data-slide=4 title='Beyond widgets...'>
          4
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=5 title='Using curl'>
+        data-slide=5 title=''>
          5
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=6 title='OpenCPU apps: JavaScript Client'>
+        data-slide=6 title='State in OpenCPU'>
          6
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=7 title='Compare to language bridges'>
+        data-slide=7 title='OpenCPU apps: JavaScript Client'>
          7
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=8 title='Difficulties with language bridges'>
+        data-slide=8 title='Compare to language bridges'>
          8
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=9 title='Towards an API'>
+        data-slide=9 title='Difficulties with language bridges'>
          9
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=10 title='Separation of concerns'>
+        data-slide=10 title='Towards an API'>
          10
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=11 title='The OpenCPU API'>
+        data-slide=11 title='Separation of concerns'>
          11
       </a>
     </li>
@@ -864,26 +897,32 @@ sudo apt-get install opencpu
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=17 title='Libraries'>
+        data-slide=17 title='The OpenCPU API'>
          17
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=18 title='Trying OpenCPU'>
+        data-slide=18 title='Libraries'>
          18
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=19 title='Publish your packages/apps on ocpu.io'>
+        data-slide=19 title='Trying OpenCPU'>
          19
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=20 title='Learn more!'>
+        data-slide=20 title='Publish your packages/apps on ocpu.io'>
          20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Learn more!'>
+         21
       </a>
     </li>
   </ul>
