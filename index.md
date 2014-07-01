@@ -146,6 +146,18 @@ Which is the basis of the [stocks](https://demo.ocpu.io/stocks/www/) app and [th
 
 ---
 
+## OpenCPU and RStudio Server
+
+[![rstudio](rstudio.png)](https://public.opencpu.org/rstudio)
+
+---
+
+## API testing page
+
+[![testttool](testtool.png)](https://public.opencpu.org/ocpu/test/)
+
+---
+
 ## Compare to language bridges
 
 Bridges to R are available for most popular languages and environments:
