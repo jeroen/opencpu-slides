@@ -18,7 +18,7 @@ library(slidifyLibraries)
 
 ## What is OpenCPU
 
-<q>The OpenCPU system provides a HTTP API for scientific computing to build scalable analysis and visualization modules for use in systems, pipelines, and web applications.</q>
+<q>The OpenCPU system exposes an HTTP API for scientific computing to build scalable analysis and visualization modules for use in systems, pipelines, and web applications.</q>
 
 ---
 
@@ -31,17 +31,17 @@ curl https://public.opencpu.org/ocpu/library/stats/R/rnorm/json \
 [4.9829, 6.3104, 11.411]
 ```
 
-This performs the following procedure
+This maps to the following request
 
 
 ```r
-library(jsonlite)
+#library(jsonlite)
 args <- fromJSON('{"n":3, "mean": 10, "sd":10}')
 output <- do.call(stats::rnorm, args)
 toJSON(output)
 ```
 
-Which is equivalent to
+Which is equivalent to this function call
 
 
 ```r
@@ -158,7 +158,7 @@ Which is the basis of the [stocks](https://demo.ocpu.io/stocks/www/) app and [th
 
 ---
 
-## Compare to language bridges
+## Motivation: Compare to language bridges
 
 Bridges to R are available for most popular languages and environments:
 
@@ -175,7 +175,7 @@ So why would you want to use OpenCPU?
 
 ---
 
-## Difficulties with language bridges
+## Motivation Difficulties with language bridges
 
 An hello-world example from the `rserve` manual:
 
@@ -276,6 +276,11 @@ Current API uses GET and POST methods. Get is for retrieving objects, POST is fo
 		</tr>						 
 	</tbody>
 </table>
+
+### Try it!
+
+ - https://public.opencpu.org/library/ocpu/{pkg}/
+ - https://demo.ocpu.io/{pkg}/
 
 ---
 
@@ -460,9 +465,8 @@ sudo apt-get install opencpu
 
 ## Publish your packages/apps on ocpu.io
 
-<br>
-
-Github Webhook: https://public.opencpu.org/ocpu/webhook
+- Github Webhook: https://public.opencpu.org/ocpu/webhook
+- Your package: https://yourname.ocpu.io/pkgname/
 
 <hr>
 

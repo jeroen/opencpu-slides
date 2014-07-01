@@ -51,7 +51,7 @@ library(slidifyLibraries)
 
 <h2>What is OpenCPU</h2>
 
-<p><q>The OpenCPU system provides a HTTP API for scientific computing to build scalable analysis and visualization modules for use in systems, pipelines, and web applications.</q></p>
+<p><q>The OpenCPU system exposes an HTTP API for scientific computing to build scalable analysis and visualization modules for use in systems, pipelines, and web applications.</q></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -68,15 +68,15 @@ library(slidifyLibraries)
 [4.9829, 6.3104, 11.411]
 </code></pre>
 
-<p>This performs the following procedure</p>
+<p>This maps to the following request</p>
 
-<pre><code class="r">library(jsonlite)
+<pre><code class="r">#library(jsonlite)
 args &lt;- fromJSON(&#39;{&quot;n&quot;:3, &quot;mean&quot;: 10, &quot;sd&quot;:10}&#39;)
 output &lt;- do.call(stats::rnorm, args)
 toJSON(output)
 </code></pre>
 
-<p>Which is equivalent to</p>
+<p>Which is equivalent to this function call</p>
 
 <pre><code class="r">rnorm(n=3, mean=10, sd=10)
 </code></pre>
@@ -237,7 +237,7 @@ var req = $(&quot;#plotdiv&quot;).rplot(&quot;smoothplot&quot;, {
 
 <slide class="" id="slide-10" style="background:;">
   <hgroup>
-    <h2>Compare to language bridges</h2>
+    <h2>Motivation: Compare to language bridges</h2>
   </hgroup>
   <article data-timings="">
     <p>Bridges to R are available for most popular languages and environments:</p>
@@ -261,7 +261,7 @@ var req = $(&quot;#plotdiv&quot;).rplot(&quot;smoothplot&quot;, {
 
 <slide class="" id="slide-11" style="background:;">
   <hgroup>
-    <h2>Difficulties with language bridges</h2>
+    <h2>Motivation Difficulties with language bridges</h2>
   </hgroup>
   <article data-timings="">
     <p>An hello-world example from the <code>rserve</code> manual:</p>
@@ -385,6 +385,13 @@ double d[] = c.eval(&quot;rnorm(10)&quot;).asDoubles();
         </tr>                        
     </tbody>
 </table>
+
+<h3>Try it!</h3>
+
+<ul>
+<li><a href="https://public.opencpu.org/library/ocpu/%7Bpkg%7D/">https://public.opencpu.org/library/ocpu/{pkg}/</a></li>
+<li><a href="https://demo.ocpu.io/%7Bpkg%7D/">https://demo.ocpu.io/{pkg}/</a></li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -774,9 +781,10 @@ sudo apt-get install opencpu
     <h2>Publish your packages/apps on ocpu.io</h2>
   </hgroup>
   <article data-timings="">
-    <p><br></p>
-
-<p>Github Webhook: <a href="https://public.opencpu.org/ocpu/webhook">https://public.opencpu.org/ocpu/webhook</a></p>
+    <ul>
+<li>Github Webhook: <a href="https://public.opencpu.org/ocpu/webhook">https://public.opencpu.org/ocpu/webhook</a></li>
+<li>Your package: <a href="https://yourname.ocpu.io/pkgname/">https://yourname.ocpu.io/pkgname/</a></li>
+</ul>
 
 <hr>
 
@@ -877,13 +885,13 @@ sudo apt-get install opencpu
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=10 title='Compare to language bridges'>
+        data-slide=10 title='Motivation: Compare to language bridges'>
          10
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=11 title='Difficulties with language bridges'>
+        data-slide=11 title='Motivation Difficulties with language bridges'>
          11
       </a>
     </li>
