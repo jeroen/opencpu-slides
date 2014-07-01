@@ -175,7 +175,7 @@ So why would you want to use OpenCPU?
 
 ---
 
-## Motivation Difficulties with language bridges
+## Motivation: Difficulties with language bridges
 
 An hello-world example from the `rserve` manual:
 
