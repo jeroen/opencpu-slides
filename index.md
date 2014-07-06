@@ -148,7 +148,7 @@ Which is the basis of the [stocks](https://demo.ocpu.io/stocks/www/) app and [th
 
 ## OpenCPU and RStudio Server
 
-[![rstudio](rstudio.png)](https://public.opencpu.org/rstudio)
+[![rstudio](rstudio.png)](https://public.opencpu.org/rstudio/)
 
 ---
 
